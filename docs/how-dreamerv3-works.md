@@ -32,9 +32,9 @@ The World Model is a Recurrent State-Space Model (RSSM). It does not try to copy
 
 Its state at time $t$ is:
 
-$$
+```math
 s_t = (h_t, z_t)
-$$
+```
 
 | Part | Meaning | How it is obtained |
 |:---:|---|:---:|
@@ -49,19 +49,19 @@ The stochastic state is a vector of categorical variables. The model produces on
 
 The recurrent state advances before the current observation is used:
 
-$$
+```math
 h_t = f_\phi(h_{t-1}, z_{t-1}, a_{t-1})
-$$
+```
 
 The model can then produce two distributions for $z_t$:
 
-$$
+```math
 \text{prior:}\quad p_\phi(z_t \mid h_t)
-$$
+```
 
-$$
+```math
 \text{posterior:}\quad q_\phi(z_t \mid h_t, x_t)
-$$
+```
 
 The prior predicts what could be true before seeing the current observation. The posterior uses the observation to infer what is more likely to be true.
 
@@ -121,15 +121,15 @@ The agent needs the previous context to remember the key color. It also needs th
 
 During real interaction or replay, the current observation exists. Dreamer can sample from the posterior:
 
-$$
+```math
 z_t \sim q_\phi(z_t \mid h_t, x_t)
-$$
+```
 
 During imagination, no future observation exists. Dreamer must sample from the prior:
 
-$$
+```math
 z_t \sim p_\phi(z_t \mid h_t)
-$$
+```
 
 ```mermaid
 flowchart TB
@@ -167,15 +167,15 @@ The decoder matters during training because reconstructing observations forces t
 
 The actor interacts with the environment and stores transitions in a replay buffer:
 
-$$
+```math
 (x_t, a_t, r_t, c_t)
-$$
+```
 
 Here $c_t$ says whether the episode continues. The World Model trains on sequences sampled from this buffer.
 
 Its loss has three main parts:
 
-$$
+```math
 \mathcal{L}_{\text{world}}
 =
 \mathcal{L}_{\text{pred}}
@@ -183,7 +183,7 @@ $$
 \mathcal{L}_{\text{dyn}}
 +
 0.1\mathcal{L}_{\text{rep}}
-$$
+```
 
 | Loss | What it trains |
 |:---:|:---:|
@@ -220,7 +220,7 @@ The standard imagination horizon contains 16 states and 15 transitions. This is 
 
 The critic needs targets that include rewards beyond the short imagined horizon. Dreamer uses bootstrapped $\lambda$-returns:
 
-$$
+```math
 R_t^\lambda
 =
 \hat r_t
@@ -231,13 +231,13 @@ R_t^\lambda
 +
 \lambda R_{t+1}^\lambda
 \right]
-$$
+```
 
 At the end of the imagined trajectory, the critic provides the bootstrap value:
 
-$$
+```math
 R_H^\lambda = V_\psi(s_H)
-$$
+```
 
 The imagined trajectory is generated forward. The return targets are then calculated backward.
 
@@ -259,9 +259,9 @@ The critic is trained so that its predicted return distribution matches the $\la
 
 The actor compares the imagined return with the critic baseline:
 
-$$
+```math
 A_t = R_t^\lambda - V_\psi(s_t)
-$$
+```
 
 A positive advantage means that the sampled action did better than expected. A negative advantage means that it did worse than expected.
 
@@ -355,4 +355,3 @@ This explanation is based on my study notes and the following primary sources:
 - [Mastering diverse control tasks through World Models](https://www.nature.com/articles/s41586-025-08744-2), the published DreamerV3 paper.
 - [Mastering Diverse Domains through World Models](https://arxiv.org/abs/2301.04104), the arXiv version.
 - [Danijar Hafner's DreamerV3 JAX repository](https://github.com/danijar/dreamerv3), which is not the experimental codebase used in this study.
-

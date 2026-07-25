@@ -70,27 +70,27 @@ R2-Dreamer instead prevents collapse through an internal redundancy-reduction ob
 
 DreamerV3 decodes the model state into an observation:
 
-$$
+```math
 \hat o_t \sim p_\phi(\hat o_t \mid s_t)
-$$
+```
 
 Its reconstruction loss asks the state to preserve enough information to reproduce the pixels:
 
-$$
+```math
 \mathcal{L}_{\text{recon}}(t)
 =
 -\log p_\phi(o_t \mid s_t)
-$$
+```
 
 R2-Dreamer removes this decoder. It adds a lightweight linear projector that maps the model state into the same feature space as the encoded observation:
 
-$$
-e_t = \operatorname{enc}_\phi(o_t)
-$$
+```math
+e_t = \mathrm{enc}_\phi(o_t)
+```
 
-$$
-k_t = \operatorname{proj}_\phi(s_t)
-$$
+```math
+k_t = \mathrm{proj}_\phi(s_t)
+```
 
 It then compares:
 
@@ -121,27 +121,27 @@ R2-Dreamer adapts the Barlow Twins objective.
 
 For a batch containing $B$ sequences of length $T$, the projected states and observation embeddings are reshaped so that all $B \times T$ time steps become samples:
 
-$$
+```math
 K \in \mathbb{R}^{BT \times D},
 \qquad
 E \in \mathbb{R}^{BT \times D}
-$$
+```
 
 Each feature dimension is standardized across those samples. The model then computes a cross-correlation matrix:
 
-$$
+```math
 C_{ij}
 =
 \frac{1}{BT}
 \sum_{n=1}^{BT}
 \tilde K_{n,i}\tilde E_{n,j}
-$$
+```
 
 Here, $C_{ij}$ measures how strongly dimension $i$ of the projected state varies with dimension $j$ of the observation embedding.
 
 The loss is:
 
-$$
+```math
 \mathcal{L}_{\text{BT}}
 =
 \underbrace{
@@ -152,7 +152,7 @@ $$
 \underbrace{
 \sum_{i\ne j} C_{ij}^2
 }_{\text{redundancy reduction}}
-$$
+```
 
 It has two complementary jobs.
 
@@ -160,9 +160,9 @@ It has two complementary jobs.
 
 The diagonal entries should approach one:
 
-$$
+```math
 C_{ii} \rightarrow 1
-$$
+```
 
 This encourages each dimension of the projected state to agree with the corresponding dimension of the observation embedding. In the paper this is called the invariance term.
 
@@ -170,16 +170,16 @@ This encourages each dimension of the projected state to agree with the correspo
 
 The off-diagonal entries should approach zero:
 
-$$
+```math
 C_{ij} \rightarrow 0
 \qquad \text{for } i \ne j
-$$
+```
 
 Penalizing correlations between different dimensions encourages them to represent different factors instead of repeating the same signal.
 
 The combined target resembles an identity matrix:
 
-$$
+```math
 C
 \approx
 \begin{bmatrix}
@@ -187,7 +187,7 @@ C
 0 & 1 & 0 \\
 0 & 0 & 1
 \end{bmatrix}
-$$
+```
 
 The diagonal says: "preserve shared information". The off-diagonal says: "do not preserve it redundantly".
 
@@ -206,9 +206,9 @@ The RSSM state combines recurrent context, previous actions, and information inf
 
 The implementation detaches the observation embedding in the direct target branch:
 
-$$
-\operatorname{sg}(e_t)
-$$
+```math
+\mathrm{sg}(e_t)
+```
 
 A simplified version is:
 
@@ -222,7 +222,7 @@ e = e.detach().reshape(batch_size * sequence_length, feature_dim)
 
 This does not freeze the image encoder. The encoder output also enters the posterior, so gradients can still reach the encoder through:
 
-$$
+```math
 e_t
 \rightarrow
 q_\phi(z_t \mid h_t,e_t)
@@ -232,7 +232,7 @@ s_t
 k_t
 \rightarrow
 \mathcal{L}_{\text{BT}}
-$$
+```
 
 ```mermaid
 flowchart LR
@@ -249,7 +249,7 @@ The detached branch supplies a stable target while the posterior and RSSM path c
 
 DreamerV3 combines observation reconstruction, reward and continuation prediction, and the prior-posterior KL losses:
 
-$$
+```math
 \mathcal{L}_{\text{DreamerV3}}
 =
 \sum_t
@@ -262,11 +262,11 @@ $$
 +
 \beta_{\text{rep}}\mathcal{L}_{\text{rep}}(t)
 \right]
-$$
+```
 
 R2-Dreamer replaces only the reconstruction component:
 
-$$
+```math
 \mathcal{L}_{\text{R2}}
 =
 \beta_{\text{BT}}\mathcal{L}_{\text{BT}}
@@ -279,7 +279,7 @@ $$
 +
 \beta_{\text{rep}}\mathcal{L}_{\text{rep}}(t)
 \right]
-$$
+```
 
 The paper uses:
 
