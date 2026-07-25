@@ -1,4 +1,4 @@
-# Learning World Models with DreamerV3 and R2-Dreamer
+# Learning World Models
 
 ## Context
 
