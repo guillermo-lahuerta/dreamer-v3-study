@@ -14,7 +14,7 @@ To kick things off, I have read a bunch of blogposts, YouTube videos, and papers
 
 ## Objective
 
-This repository will be a summary of my personal study to understand the DreamerV3 and R2-Dreamer papers. I plan to run a comparison of the two methods (original `DreamerV3` vs. the newer `R2-Dreamer`) on a simple visual task. I will document my progress here, and I hope **this could be useful for anyone else trying to get started in this field**. If it is, please feel free to reach out to me, for example, via [Linkedin](https://www.linkedin.com/in/guillermo-lahuerta/).
+This repository will be a summary of my personal study to understand the DreamerV3 and R2-Dreamer papers. I plan to compare the `DreamerV3` baseline implemented in [NM512/r2dreamer](https://github.com/NM512/r2dreamer) with `R2-Dreamer` on a simple visual task. I will document my progress here, and I hope **this could be useful for anyone else trying to get started in this field**. If it is, please feel free to reach out to me, for example, via [Linkedin](https://www.linkedin.com/in/guillermo-lahuerta/).
 
 ## Why DreamerV3
 

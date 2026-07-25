@@ -22,7 +22,7 @@ The first configuration is the R2-Dreamer authors' PyTorch reproduction of Dream
 R2-Dreamer retains the parts of DreamerV3 described in the main [guide](how-dreamerv3-works.md):
 
 - an image encoder;
-- an RSSM with deterministic state \(h_t\) and stochastic state \(z_t\);
+- an RSSM with deterministic state $h_t$ and stochastic state $z_t$;
 - prior and posterior distributions;
 - reward and continuation predictors;
 - latent imagination;
@@ -94,8 +94,8 @@ $$
 
 It then compares:
 
-- \(e_t\), the features extracted from the current observation;
-- \(k_t\), the features predicted from the complete RSSM state.
+- $e_t$, the features extracted from the current observation;
+- $k_t$, the features predicted from the complete RSSM state.
 
 ```mermaid
 flowchart LR
@@ -119,7 +119,7 @@ The objective changes the question asked of the latent state:
 
 R2-Dreamer adapts the Barlow Twins objective.
 
-For a batch containing \(B\) sequences of length \(T\), the projected states and observation embeddings are reshaped so that all \(B \times T\) time steps become samples:
+For a batch containing $B$ sequences of length $T$, the projected states and observation embeddings are reshaped so that all $B \times T$ time steps become samples:
 
 $$
 K \in \mathbb{R}^{BT \times D},
@@ -137,7 +137,7 @@ C_{ij}
 \tilde K_{n,i}\tilde E_{n,j}
 $$
 
-Here, \(C\_{ij}\) measures how strongly dimension \(i\) of the projected state varies with dimension \(j\) of the observation embedding.
+Here, $C_{ij}$ measures how strongly dimension $i$ of the projected state varies with dimension $j$ of the observation embedding.
 
 The loss is:
 
@@ -197,8 +197,8 @@ Standard Barlow Twins normally compares two augmented versions of the same image
 
 |  View   |                         Meaning                          |
 | :-----: | :------------------------------------------------------: |
-| \(e_t\) | Features extracted directly from the current observation |
-| \(k_t\) |     Features predicted from the complete RSSM state      |
+| $e_t$ | Features extracted directly from the current observation |
+| $k_t$ |     Features predicted from the complete RSSM state      |
 
 The RSSM state combines recurrent context, previous actions, and information inferred from the current observation. R2-Dreamer therefore aligns **what the image says now** with **what the World Model state knows now**. No artificial image transformation is required.
 
@@ -285,12 +285,12 @@ The paper uses:
 
 |                  Hyperparameter                   |       Value        |
 | :-----------------------------------------------: | :----------------: |
-|       BT loss scale \(\beta\_{\text{BT}}\)        |        0.05        |
-|           Off-diagonal scale \(\alpha\)           | \(5\times10^{-4}\) |
-|    Dynamics-loss scale \(\beta\_{\text{dyn}}\)    |         1          |
-| Representation-loss scale \(\beta\_{\text{rep}}\) |        0.1         |
-|                 Batch size \(B\)                  |         16         |
-|               Sequence length \(T\)               |         64         |
+|       BT loss scale $\beta_{\text{BT}}$        |        0.05        |
+|           Off-diagonal scale $\alpha$           | $5\times10^{-4}$ |
+|    Dynamics-loss scale $\beta_{\text{dyn}}$    |         1          |
+| Representation-loss scale $\beta_{\text{rep}}$ |        0.1         |
+|                 Batch size $B$                  |         16         |
+|               Sequence length $T$               |         64         |
 
 The reward and continuation predictors, KL balancing, free bits, and latent uniform mixture remain in place.
 

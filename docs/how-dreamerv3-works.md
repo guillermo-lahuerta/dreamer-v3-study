@@ -30,7 +30,7 @@ The figure below shows the same split in the paper. The left side trains the Wor
 
 The World Model is a Recurrent State-Space Model (RSSM). It does not try to copy every detail of the environment. It tries to keep the information needed to predict and act.
 
-Its state at time \(t\) is:
+Its state at time $t$ is:
 
 $$
 s_t = (h_t, z_t)
@@ -38,10 +38,10 @@ $$
 
 | Part | Meaning | How it is obtained |
 |:---:|---|:---:|
-| \(h_t\) | Deterministic recurrent state | Updated from the previous state and action |
-| \(z_t\) | Stochastic categorical state | Sampled from a prior or posterior distribution |
+| $h_t$ | Deterministic recurrent state | Updated from the previous state and action |
+| $z_t$ | Stochastic categorical state | Sampled from a prior or posterior distribution |
 
-It is useful to think of \(h_t\) as recurrent context and \(z_t\) as the uncertain part of the current state. Calling them memory and perception is a reasonable first approximation, but the real model can distribute information across both.
+It is useful to think of $h_t$ as recurrent context and $z_t$ as the uncertain part of the current state. Calling them memory and perception is a reasonable first approximation, but the real model can distribute information across both.
 
 The stochastic state is a vector of categorical variables. The model produces one probability distribution per row, samples one class from each row, and flattens the resulting one-hot vectors.
 
@@ -53,7 +53,7 @@ $$
 h_t = f_\phi(h_{t-1}, z_{t-1}, a_{t-1})
 $$
 
-The model can then produce two distributions for \(z_t\):
+The model can then produce two distributions for $z_t$:
 
 $$
 \text{prior:}\quad p_\phi(z_t \mid h_t)
@@ -114,8 +114,8 @@ The agent needs the previous context to remember the key color. It also needs th
 
 | Distribution | Information available | Role in the example |
 |:---:|:---:|:---:|
-| \(p_\phi(z_t \mid h_t)\) | Recurrent context | Remembers the blue key but is uncertain about the layout |
-| \(q_\phi(z_t \mid h_t, x_t)\) | Recurrent context and current frame | Combines the blue key with the visible door positions |
+| $p_\phi(z_t \mid h_t)$ | Recurrent context | Remembers the blue key but is uncertain about the layout |
+| $q_\phi(z_t \mid h_t, x_t)$ | Recurrent context and current frame | Combines the blue key with the visible door positions |
 
 ### Why both distributions are needed
 
@@ -149,7 +149,7 @@ Training brings the prior and posterior close together. The posterior teaches th
 
 ### What comes out of a model state
 
-Once \(s_t = (h_t, z_t)\) is available, several prediction heads use it:
+Once $s_t = (h_t, z_t)$ is available, several prediction heads use it:
 
 ```mermaid
 flowchart LR
@@ -171,7 +171,7 @@ $$
 (x_t, a_t, r_t, c_t)
 $$
 
-Here \(c_t\) says whether the episode continues. The World Model trains on sequences sampled from this buffer.
+Here $c_t$ says whether the episode continues. The World Model trains on sequences sampled from this buffer.
 
 Its loss has three main parts:
 
@@ -197,10 +197,10 @@ After a world-model update, Dreamer starts from latent states inferred from repl
 
 For one imagined transition:
 
-1. The actor samples \(a_t \sim \pi_\theta(a_t \mid s_t)\).
-2. The sequence model advances \(h_{t+1}\).
-3. The prior samples \(z_{t+1}\).
-4. The reward and continue heads predict \(\hat r_t\) and \(\hat c_t\).
+1. The actor samples $a_t \sim \pi_\theta(a_t \mid s_t)$.
+2. The sequence model advances $h_{t+1}$.
+3. The prior samples $z_{t+1}$.
+4. The reward and continue heads predict $\hat r_t$ and $\hat c_t$.
 5. The actor and critic process the new model state.
 
 ```mermaid
@@ -218,7 +218,7 @@ The standard imagination horizon contains 16 states and 15 transitions. This is 
 
 ### Return targets
 
-The critic needs targets that include rewards beyond the short imagined horizon. Dreamer uses bootstrapped \(\lambda\)-returns:
+The critic needs targets that include rewards beyond the short imagined horizon. Dreamer uses bootstrapped $\lambda$-returns:
 
 $$
 R_t^\lambda
@@ -251,9 +251,9 @@ flowchart LR
 
 ### Critic update
 
-The critic predicts a distribution over future returns, not only one scalar. Its expected value is written as \(V_\psi(s_t)\).
+The critic predicts a distribution over future returns, not only one scalar. Its expected value is written as $V_\psi(s_t)$.
 
-The critic is trained so that its predicted return distribution matches the \(\lambda\)-return target. In plain language, it learns what each imagined state is worth under the current actor.
+The critic is trained so that its predicted return distribution matches the $\lambda$-return target. In plain language, it learns what each imagined state is worth under the current actor.
 
 ### Actor update
 
@@ -334,7 +334,7 @@ The main idea existed before DreamerV3. Much of the third version is about makin
 | Dreamer plans online before every action | Imagination is mainly a training tool. Real action selection uses the actor directly |
 | The posterior is used during imagination | Imagined future observations do not exist, so imagination uses the prior |
 | The actor and critic losses train the World Model | The world-model parameters stay frozen during imagined behavior learning |
-| \(h_t\) is only memory and \(z_t\) is only perception | This is a useful mnemonic, but information can be distributed across both |
+| $h_t$ is only memory and $z_t$ is only perception | This is a useful mnemonic, but information can be distributed across both |
 
 ## Final mental model
 
