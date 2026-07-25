@@ -1,0 +1,27 @@
+{
+    // -----------------------------------------------------
+    // ---------------- POETRY ENVIRONMENTS ----------------
+    "python.defaultInterpreterPath": "/Users/guillermolahuerta/Library/Caches/pypoetry/virtualenvs/carrito-backend-R1wJGmml-py3.13/bin/python",
+    // -----------------------------------------------------
+    // -------------------- UNIT TEST ----------------------
+    "python.envFile": "${workspaceFolder}/backend/.env",
+    "python.testing.pytestArgs": [
+        "backend"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    // -----------------------------------------------------
+    // -------------------- PYTHONPATH ---------------------
+    "terminal.integrated.env.osx": {
+        "PYTHONPATH": "${workspaceFolder}",
+    },
+    // -----------------------------------------------------
+    // ---------------------- FORMAT -----------------------
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "editor.formatOnSave": true
+}
